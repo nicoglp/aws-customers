@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: RESTFull Users API
+Globals:
+  Function:
+    Timeout: 6
+Parameters:
+  ENVIRONMENT:
+    Default: dev
+    Description: Set the runtime environment
+    Type: String
+  LOGLEVEL:
+    Default: DEBUG
+    Description: Logger level
+    Type: String
+  REGIONNAME:
+    Default: us-east-2
+    Description: Default region for deployment.
+    Type: String
+  TABLENAME:
+    Default: Users
+    Description: The DynamoDB table for storing Users information.
+    Type: String
+Resources:
+  UsersFunction:
+    Properties:
+      CodeUri: s3://nicoglp-artifacts/23a497affca59f8b4da9142f735ccbf5
+      Description: RESTFull API endpoints to manage Users entities
+      Environment:
+        Variables:
+          ENVIRONMENT:
+            Ref: ENVIRONMENT
+          LOGLEVEL:
+            Ref: LOGLEVEL
+          REGION:
+            Ref: REGIONNAME
+          TABLE:
+            Ref: TABLENAME
+      Events:
+        UsersGET:
+          Properties:
+            Method: GET
+            Path: /users/{id}
+          Type: Api
+        UsersPOST:
+          Properties:
+            Method: POST
+            Path: /users
+          Type: Api
+      Handler: app.aws_lambda.handler
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: python3.7
+    Type: AWS::Serverless::Function
+  UsersTable:
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: email
+        AttributeType: S
+      KeySchema:
+      - AttributeName: email
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName:
+        Ref: TABLENAME
+    Type: AWS::DynamoDB::Table
+Transform: AWS::Serverless-2016-10-31

@@ -33,6 +33,6 @@ class UserSchema(schema.ModelSchema):
 
 schema = UserSchema()
 
-dao = dao.DynamoDAO(config.USER_TABLENAME, schema, 'email')
+dao = dao.DynamoDAO(config.TABLENAME, schema, 'email')
 
 service = service.EntityService(dao=dao, schema=schema)

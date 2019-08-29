@@ -8,10 +8,10 @@ Globals:
     Timeout: 6
 
 Parameters:
-  DYNAMODB_URL:
+  ENVIRONMENT:
     Type: String
-    Description: The DynamoDB url.
-    Default: 'http://docker.for.mac.localhost:8000'
+    Description: Set the runtime environment
+    Default: 'dev'
   TABLENAME:
     Type: String
     Description: The DynamoDB table for storing Users information.
@@ -20,22 +20,25 @@ Parameters:
     Type: String
     Description: Default region for deployment.
     Default: 'us-east-2'
+  LOGLEVEL:
+    Type: String
+    Description: Logger level
+    Default: 'DEBUG'
 
 Resources:
-  Resources:
-    PersonTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: !Ref TABLENAME
-        AttributeDefinitions:
-          - AttributeName: email
-            AttributeType: S
-        KeySchema:
-          - AttributeName: email
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref TABLENAME
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
 
   UsersFunction:
     Type: AWS::Serverless::Function
@@ -47,8 +50,11 @@ Resources:
       Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
+          ENVIRONMENT: !Ref ENVIRONMENT
           TABLE: !Ref TABLENAME
           REGION: !Ref REGIONNAME
+          LOGLEVEL: !Ref LOGLEVEL
+
       Events:
         UsersPOST:
           Type: Api

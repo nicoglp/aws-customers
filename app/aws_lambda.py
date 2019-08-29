@@ -4,7 +4,7 @@ from . import config
 from .users import service
 
 logger = logging.getLogger()
-logger.setLevel(config.DEBUG_LEVEL)
+logger.setLevel(config.LOGLEVEL)
 
 
 def handler(event, context):
