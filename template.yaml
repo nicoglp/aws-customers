@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'RESTFull Users API'
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 6
+
+Parameters:
+  DYNAMODB_URL:
+    Type: String
+    Description: The DynamoDB url.
+    Default: 'http://docker.for.mac.localhost:8000'
+  TABLENAME:
+    Type: String
+    Description: The DynamoDB table for storing Users information.
+    Default: 'Users'
+  REGIONNAME:
+    Type: String
+    Description: Default region for deployment.
+    Default: 'us-east-2'
+
+Resources:
+  Resources:
+    PersonTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: !Ref TABLENAME
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+  UsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API endpoints to manage Users entities'
+      CodeUri: .
+      Handler: app.aws_lambda.handler
+      Runtime: python3.7
+      Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLE: !Ref TABLENAME
+          REGION: !Ref REGIONNAME
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: POST
+        UsersGET:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: GET
