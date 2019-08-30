@@ -41,7 +41,25 @@ class EntityService:
             # self._audit_after(validation_error, 400)
             return validation_error, 400
 
-    # def put(self, id, **kwargs):
+    def delete(self, id, **kwargs):
+
+        # self._audit_before()
+
+        # Check existence
+        if False:
+            raise exception.EntityNotFoundError(id)
+
+        try:
+            deleted_entity = self.dao.delete(id)
+
+            # self._audit_after(deleted_entity, 200)
+            return self.schema.dumps(deleted_entity), 200
+
+        except ValidationError as validation_error:
+            # self._audit_after(validation_error, 400)
+            return validation_error, 400
+
+    # def update(self, id, **kwargs):
     #     self._audit_before()
     #
     #     entity = self.dao.retrieve(id)
@@ -90,17 +108,3 @@ class EntityService:
     #         raise exception.EntityNotFoundError(id)
     #
     #
-    # def delete(self, id, **kwargs):
-    #     self._audit_before()
-    #
-    #     with self.dao.session_scope():
-    #         deleted_entity = self.dao.delete(id)
-    #
-    #         if deleted_entity:
-    #             response, errors = self.schema.dump(deleted_entity)
-    #             service.logger.info(
-    #                 "Entity {} has been deleted".format(id),
-    #                 extra=dict(document_id=str(id)))
-    #             return self._response(response, 200)
-    #         else:
-    #             raise exception.EntityNotFoundError(id)

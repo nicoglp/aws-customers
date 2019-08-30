@@ -2,11 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: 'RESTFull Users API'
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
-Globals:
-  Function:
-    Timeout: 6
-
 Parameters:
   ENVIRONMENT:
     Type: String
@@ -25,6 +20,17 @@ Parameters:
     Description: Logger level
     Default: 'DEBUG'
 
+Globals:
+  Function:
+    Runtime: python3.7
+    Timeout: 6
+    Environment:
+      Variables:
+        ENVIRONMENT: !Ref ENVIRONMENT
+        TABLE: !Ref TABLENAME
+        REGION: !Ref REGIONNAME
+        LOGLEVEL: !Ref LOGLEVEL
+
 Resources:
   UsersTable:
     Type: AWS::DynamoDB::Table
@@ -40,29 +46,58 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 
-  UsersFunction:
+  POSTUserFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Description: 'RESTFull API endpoints to manage Users entities'
+      Description: 'RESTFull API - POST Method to create a new Users entity'
       CodeUri: .
-      Handler: app.aws_lambda.handler
-      Runtime: python3.7
+      Handler: app.aws_lambda.post
       Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          ENVIRONMENT: !Ref ENVIRONMENT
-          TABLE: !Ref TABLENAME
-          REGION: !Ref REGIONNAME
-          LOGLEVEL: !Ref LOGLEVEL
-
       Events:
         UsersPOST:
           Type: Api
           Properties:
             Path: /users
             Method: POST
-        UsersGET:
+
+  GETUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve an Users entity'
+      CodeUri: .
+      Handler: app.aws_lambda.get
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
           Type: Api
           Properties:
             Path: /users/{id}
             Method: GET
+
+  PUTUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - PUT Method to update a complete Users entity'
+      CodeUri: .
+      Handler: app.aws_lambda.put
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: PUT
+
+  DELETEUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - DELETE Method to remove an Users entity'
+      CodeUri: .
+      Handler: app.aws_lambda.delete
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: DELETE
