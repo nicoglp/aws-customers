@@ -165,7 +165,7 @@ aws cloudformation describe-stacks \
 
 Last production endpoints !!
 
- _POST /users_
+ _POST /users : Create new User_
  ```shell script
 curl -X POST \
   https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users \
@@ -179,10 +179,21 @@ curl -X POST \
 }'
 ```
 
-_GET /users_
+_GET /users/{id} : Get user with {id}_
 ```shell script
 curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users/jon.doe@gmail.com
 ```
+
+_DELETE /users/{id} : Delete user with {id}_
+```shell script
+curl -X  https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users/jon.doe@gmail.com
+```
+
+_GET /users : List of users_
+```shell script
+curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users
+```
+
 
 ## Cleanup
 
