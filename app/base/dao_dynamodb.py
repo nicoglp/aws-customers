@@ -33,7 +33,7 @@ class DynamoDAO:
         super(DynamoDAO, self).__init__()
         self.schema = storage_schema
         if 'dev' == config.ENVIRONMENT:
-            self.db = boto3.resource('dynamodb', endpoint_url=config.LOCAL_DYNAMODN_URL)
+            self.db = boto3.resource('dynamodb', endpoint_url=config.LOCAL_DYNAMODB_URL)
         else:
             self.db = boto3.resource('dynamodb')
         self.table_name = table_name
