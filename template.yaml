@@ -46,6 +46,20 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 
+  LISTUserFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        Description: 'RESTFull API - GET Method to retrieve list of Users'
+        CodeUri: .
+        Handler: app.aws_lambda.list
+        Policies: AmazonDynamoDBFullAccess
+        Events:
+          UsersPOST:
+            Type: Api
+            Properties:
+              Path: /users
+              Method: GET
+
   POSTUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -101,3 +115,5 @@ Resources:
           Properties:
             Path: /users/{id}
             Method: DELETE
+
+

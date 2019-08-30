@@ -1,5 +1,6 @@
+import json
 from .exception import *
-
+from .schema import pagination_schema
 from marshmallow import ValidationError
 
 
@@ -59,6 +60,19 @@ class EntityService:
         except ValidationError as validation_error:
             raise ValidationError(validation_error)
 
+    def list(self, **kwargs):
+        # self._audit_before()
+
+        try:
+            page = self.dao.find_all()
+
+            # self._audit_after(page)
+            pages = pagination_schema.dump(page)
+            data = self.schema.dump(page.items, many=True)
+            return json.dumps(dict(items=data, page=pages))
+
+        except ValidationError as validation_error:
+            raise ValidationError(validation_error)
 
 
     # def update(self, id, **kwargs):

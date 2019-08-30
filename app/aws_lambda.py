@@ -58,3 +58,17 @@ def put(event, context):
         statusCode=result_status,
         body=result_json
     )
+
+
+def list(event, context):
+    logger.info('HTTP GET Method execution')
+
+    if not event.get("httpMethod") == 'GET':
+        result_json, result_status = dict(message="Bad request"), 500
+    else:
+        result_json, result_status = service.list(), 200
+
+    return dict(
+        statusCode=result_status,
+        body=result_json
+    )
