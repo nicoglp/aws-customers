@@ -1,6 +1,7 @@
 import json
 
 from app import aws_lambda
+from app.base import exception
 from test import UserTestCase
 
 
@@ -37,11 +38,9 @@ class UserCreateTestCase(UserTestCase):
         # Delete id
         user_dict = json.loads(create_response['body'])
         event = dict(httpMethod='DELETE', pathParameters={'id': user_dict['email']})
-        deleted_user = aws_lambda.delete(event, None)
+        deleted_response = aws_lambda.delete(event, None)
 
         # Get id
         user_dict = json.loads(create_response['body'])
         event = dict(httpMethod='GET', pathParameters={'id': user_dict['email']})
-        deleted_user = aws_lambda.get(event, None)
-
-        self.assertIsNone(deleted_user)
+        self.assertRaises(exception.EntityNotFoundError, aws_lambda.get, event, None)

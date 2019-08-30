@@ -47,7 +47,7 @@ class DynamoDAO:
         log.debug('get_item params %s', retrieve_params)
         result = self.table.get_item(Key=retrieve_params)
 
-        return self.schema.load(result['Item'])
+        return self.schema.load(result['Item']) if 'Item' in result else None
 
     def create(self, entity):
         entity.id = uuid.uuid1()
@@ -68,6 +68,8 @@ class DynamoDAO:
         log.debug('delete_item params %s', delete_params)
 
         self.table.delete_item(Key=delete_params)
+
+        return True
 
     def find_all(self):
         result = self.table.scan()
