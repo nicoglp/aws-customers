@@ -1,10 +1,5 @@
-import logging
-
-from . import config
+from . import logger
 from .users import service
-
-logger = logging.getLogger()
-logger.setLevel(config.LOGLEVEL)
 
 
 def handler(event, context):
