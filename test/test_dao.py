@@ -28,7 +28,8 @@ class UserDAOTestCase(UserTestCase):
             updated_user = dao.update(new_user)
             self.assertNotEqual(updated_user.first_name, persisted_user.first_name)
 
-            deleted_user = dao.delete(user.email)
+            deleted = dao.delete(user.email)
+            self.assertTrue(deleted)
 
         except ValidationError:
             self.fail()
