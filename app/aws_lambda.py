@@ -10,7 +10,7 @@ def post(event, context):
     if not (event.get("httpMethod") == 'POST' and event['body']):
         raise exception.ServiceException("Bad request")
     else:
-        result_json, result_status = service.create(event['body']), 201
+        result_json, result_status = service.save(event['body']), 201
 
     return dict(
         statusCode=result_status,

@@ -49,7 +49,7 @@ class DynamoDAO:
 
         return self.schema.load(result['Item']) if 'Item' in result else None
 
-    def create(self, entity):
+    def save(self, entity):
         entity.id = uuid.uuid1()
 
         timestamp = datetime.utcnow().timestamp()
