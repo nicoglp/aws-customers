@@ -6,7 +6,7 @@ Parameters:
   ENVIRONMENT:
     Type: String
     Description: Set the runtime environment
-    Default: 'dev'
+    Default: 'prod'
   TABLENAME:
     Type: String
     Description: The DynamoDB table for storing Users information.
@@ -18,7 +18,7 @@ Parameters:
   LOGLEVEL:
     Type: String
     Description: Logger level
-    Default: 'DEBUG'
+    Default: 'INFO'
 
 Globals:
   Function:
@@ -116,4 +116,15 @@ Resources:
             Path: /users/{id}
             Method: DELETE
 
-
+  INGESTUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'Lambda function that ingest new CSV files on bucket gentem-bucket'
+      CodeUri: .
+      Handler: app.users_ingestion.ingest_users
+      Policies: AmazonS3FullAccess
+    Events:
+      CSVCreated:
+        Type: S3
+        Properties:
+          Bucket: gentem-bucket
