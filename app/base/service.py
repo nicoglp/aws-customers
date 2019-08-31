@@ -35,7 +35,7 @@ class EntityService:
 
         try:
             entity = self.schema.loads(data)
-            created_entity = self.dao.create(entity)
+            created_entity = self.dao.save(entity)
 
             # self._audit_after(created_entity)
             return self.schema.dumps(created_entity)

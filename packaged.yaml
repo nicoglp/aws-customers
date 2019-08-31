@@ -16,11 +16,11 @@ Globals:
     Timeout: 6
 Parameters:
   ENVIRONMENT:
-    Default: dev
+    Default: prod
     Description: Set the runtime environment
     Type: String
   LOGLEVEL:
-    Default: DEBUG
+    Default: INFO
     Description: Logger level
     Type: String
   REGIONNAME:
@@ -34,7 +34,7 @@ Parameters:
 Resources:
   DELETEUserFunction:
     Properties:
-      CodeUri: s3://nicoglp-artifacts/f9671e502b9d952ed614dd9fefd09cb5
+      CodeUri: s3://nicoglp-artifacts/b71c7699fb60d7bbc63a4640cd13836f
       Description: RESTFull API - DELETE Method to remove an Users entity
       Events:
         UsersPOST:
@@ -42,12 +42,12 @@ Resources:
             Method: DELETE
             Path: /users/{id}
           Type: Api
-      Handler: app.aws_lambda.delete
+      Handler: app.api_lambda.delete
       Policies: AmazonDynamoDBFullAccess
     Type: AWS::Serverless::Function
   GETUserFunction:
     Properties:
-      CodeUri: s3://nicoglp-artifacts/1241463aa2f4bd27d2db970961d7de8d
+      CodeUri: s3://nicoglp-artifacts/32d9c61f0868d7e6fef979e06c6fd684
       Description: RESTFull API - GET Method to retrieve an Users entity
       Events:
         UsersPOST:
@@ -55,12 +55,24 @@ Resources:
             Method: GET
             Path: /users/{id}
           Type: Api
-      Handler: app.aws_lambda.get
+      Handler: app.api_lambda.get
       Policies: AmazonDynamoDBFullAccess
+    Type: AWS::Serverless::Function
+  INGESTUserFunction:
+    Events:
+      CSVCreated:
+        Properties:
+          Bucket: gentem-bucket
+        Type: S3
+    Properties:
+      CodeUri: s3://nicoglp-artifacts/533230a3dae9242a17fefff2a5181599
+      Description: Lambda function that ingest new CSV files on bucket gentem-bucket
+      Handler: app.users_ingestion.ingest_users
+      Policies: AmazonS3FullAccess
     Type: AWS::Serverless::Function
   LISTUserFunction:
     Properties:
-      CodeUri: s3://nicoglp-artifacts/d2aaa1744d2a78b6c5cd6874078fc53b
+      CodeUri: s3://nicoglp-artifacts/a1a30f0a2bd532a8e40c2cff010944ea
       Description: RESTFull API - GET Method to retrieve list of Users
       Events:
         UsersPOST:
@@ -68,12 +80,12 @@ Resources:
             Method: GET
             Path: /users
           Type: Api
-      Handler: app.aws_lambda.list
+      Handler: app.api_lambda.list
       Policies: AmazonDynamoDBFullAccess
     Type: AWS::Serverless::Function
   POSTUserFunction:
     Properties:
-      CodeUri: s3://nicoglp-artifacts/cb415227a858b38df16d93e84e1f183f
+      CodeUri: s3://nicoglp-artifacts/894a4123fed3127633f215510320c14d
       Description: RESTFull API - POST Method to create a new Users entity
       Events:
         UsersPOST:
@@ -81,12 +93,12 @@ Resources:
             Method: POST
             Path: /users
           Type: Api
-      Handler: app.aws_lambda.post
+      Handler: app.api_lambda.post
       Policies: AmazonDynamoDBFullAccess
     Type: AWS::Serverless::Function
   PUTUserFunction:
     Properties:
-      CodeUri: s3://nicoglp-artifacts/8d3af46c3be7d6c49f77933e628bc74b
+      CodeUri: s3://nicoglp-artifacts/89c939cde32c6f3c1c92b954b0181378
       Description: RESTFull API - PUT Method to update a complete Users entity
       Events:
         UsersPOST:
@@ -94,7 +106,7 @@ Resources:
             Method: PUT
             Path: /users/{id}
           Type: Api
-      Handler: app.aws_lambda.put
+      Handler: app.api_lambda.put
       Policies: AmazonDynamoDBFullAccess
     Type: AWS::Serverless::Function
   UsersTable:

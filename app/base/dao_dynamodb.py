@@ -49,7 +49,7 @@ class DynamoDAO:
 
         return self.schema.load(result['Item']) if 'Item' in result else None
 
-    def create(self, entity):
+    def save(self, entity):
         entity.id = uuid.uuid1()
 
         timestamp = datetime.utcnow().timestamp()
@@ -60,6 +60,14 @@ class DynamoDAO:
         result = self.table.put_item(Item=document)
 
         return entity
+
+    def save_all(self, entities):
+        # TODO : Implement this method using batch update mechanism
+        saved = []
+        for e in entities:
+            saved.append(self.save(e))
+
+        return saved
 
     def delete(self, key_value):
         delete_params = {

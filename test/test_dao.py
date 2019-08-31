@@ -13,7 +13,7 @@ class UserDAOTestCase(UserTestCase):
 
         user = self._crete_user()
         try:
-            persisted_user = dao.create(user)
+            persisted_user = dao.save(user)
 
             self.assertIsInstance(persisted_user, User)
             self.assertIsNotNone(persisted_user.id)
@@ -37,7 +37,7 @@ class UserDAOTestCase(UserTestCase):
     def test_find_all(self):
         user = self._crete_user()
         try:
-            dao.create(user)
+            dao.save(user)
 
             page = dao.find_all()
             self.assertIsNotNone(page)
