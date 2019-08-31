@@ -61,6 +61,14 @@ class DynamoDAO:
 
         return entity
 
+    def save_all(self, entities):
+        # TODO : Implement this method using batch update mechanism
+        saved = []
+        for e in entities:
+            saved.append(self.save(e))
+
+        return saved
+
     def delete(self, key_value):
         delete_params = {
             self.key_name: str(key_value)
