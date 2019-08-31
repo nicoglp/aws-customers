@@ -51,7 +51,7 @@ Resources:
       Properties:
         Description: 'RESTFull API - GET Method to retrieve list of Users'
         CodeUri: .
-        Handler: app.aws_lambda.list
+        Handler: app.api_lambda.list
         Policies: AmazonDynamoDBFullAccess
         Events:
           UsersPOST:
@@ -65,7 +65,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - POST Method to create a new Users entity'
       CodeUri: .
-      Handler: app.aws_lambda.post
+      Handler: app.api_lambda.post
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -79,7 +79,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve an Users entity'
       CodeUri: .
-      Handler: app.aws_lambda.get
+      Handler: app.api_lambda.get
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -93,7 +93,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - PUT Method to update a complete Users entity'
       CodeUri: .
-      Handler: app.aws_lambda.put
+      Handler: app.api_lambda.put
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -107,7 +107,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - DELETE Method to remove an Users entity'
       CodeUri: .
-      Handler: app.aws_lambda.delete
+      Handler: app.api_lambda.delete
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
