@@ -8,3 +8,4 @@ TABLENAME = os.getenv('TABLE', 'Users')
 LOGLEVEL = os.getenv('LOGLEVEL', 'DEBUG')  # 10 = DEBUG
 
 INGEST_DATE_FORMAT = os.getenv('INGEST_DATE_FORMAT', '%m/%d/%y')
+INGEST_CSV_DELIMITER = os.getenv('INGEST_CSV_DELIMITER', ';')
