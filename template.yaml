@@ -19,6 +19,10 @@ Parameters:
     Type: String
     Description: Logger level
     Default: 'INFO'
+  INGEST_CSV_DELIMITER:
+    Type: String
+    Description: CSV fields delimiter
+    Default: ';'
 
 Globals:
   Function:
@@ -27,9 +31,11 @@ Globals:
     Environment:
       Variables:
         ENVIRONMENT: !Ref ENVIRONMENT
-        TABLE: !Ref TABLENAME
         REGION: !Ref REGIONNAME
         LOGLEVEL: !Ref LOGLEVEL
+        INGEST_CSV_DELIMITER: !Ref INGEST_CSV_DELIMITER
+        TABLE: !Ref TABLENAME
+
 
 Resources:
   UsersTable:
@@ -47,18 +53,21 @@ Resources:
         WriteCapacityUnits: 1
 
   LISTUserFunction:
-      Type: AWS::Serverless::Function
-      Properties:
-        Description: 'RESTFull API - GET Method to retrieve list of Users'
-        CodeUri: .
-        Handler: app.api_lambda.list
-        Policies: AmazonDynamoDBFullAccess
-        Events:
-          UsersPOST:
-            Type: Api
-            Properties:
-              Path: /users
-              Method: GET
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve list of Users'
+      CodeUri: .
+      Handler: app.api_lambda.list
+      Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLE: !Ref TABLENAME
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: GET
 
   POSTUserFunction:
     Type: AWS::Serverless::Function
@@ -67,6 +76,9 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.post
       Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -81,6 +93,9 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.get
       Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -95,6 +110,9 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.put
       Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -109,6 +127,9 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.delete
       Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -123,6 +144,9 @@ Resources:
       CodeUri: .
       Handler: app.users_ingestion.ingest_users
       Policies: AmazonS3FullAccess
+    Environment:
+      Variables:
+        INGEST_CSV_DELIMITER: !Ref INGEST_CSV_DELIMITER
     Events:
       CSVCreated:
         Type: S3

@@ -1,3 +1,4 @@
+import codecs
 import csv
 import json
 import urllib.parse
@@ -13,9 +14,15 @@ class IngestSchema(UserSchema):
     "Custom User schema ingestion"
 
     # Custom date format for Date of Birth
-    dob = fields.Date(format=config.INGEST_DATE_FORMAT)
+    dob = fields.Date(format=config.INGEST_DATE_FORMAT, attribute="date_of_birth")
 
 
+class IngetDialect(csv.excel):
+    """Describe the  properties of CSV files."""
+    delimiter = config.INGEST_CSV_DELIMITER
+
+
+ingestion_dialect = IngetDialect()
 ingestion_schema = IngestSchema()
 s3 = boto3.client('s3')
 
@@ -31,8 +38,8 @@ def ingest_users(event, context):
     s3_object = _get_s3_object(bucket, key)
 
     if s3_object:
-        lines = s3_object['Body'].read().splitlines(True)
-        users, errors = _create_users(lines)
+        iterable = codecs.getreader('utf-8')(s3_object['Body'])
+        users, errors = _create_users(iterable)
         _persist_users(users)
 
         logger.info(f'Ingestion process finished. User created = {len(users)} - With Errors = {len(errors)}')
@@ -57,12 +64,8 @@ def _create_users(iterable):
     users = []
     with_errors = []
 
-    dialect = csv.Sniffer().sniff(iterable.read(1024))
-    iterable.seek(0)
-
     fieldnames = ["firstName", "lastName", "email", "dob", "address"]
-
-    csv_reader = csv.DictReader(iterable, dialect=dialect, fieldnames=fieldnames)
+    csv_reader = csv.DictReader(iterable, dialect=ingestion_dialect, fieldnames=fieldnames)
     csv_reader.__next__()  # Omit headers
 
     for row in csv_reader:
