@@ -19,7 +19,7 @@ Parameters:
     Type: String
     Description: Logger level
     Default: 'INFO'
-  INGEST_CSV_DELIMITER:
+  INGESTCSVDELIMITER:
     Type: String
     Description: CSV fields delimiter
     Default: ';'
@@ -33,9 +33,8 @@ Globals:
         ENVIRONMENT: !Ref ENVIRONMENT
         REGION: !Ref REGIONNAME
         LOGLEVEL: !Ref LOGLEVEL
-        INGEST_CSV_DELIMITER: !Ref INGEST_CSV_DELIMITER
         TABLE: !Ref TABLENAME
-
+        INGEST_CSV_DELIMITER: !Ref INGESTCSVDELIMITER
 
 Resources:
   UsersTable:
@@ -59,9 +58,6 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.list
       Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -76,9 +72,6 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.post
       Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -93,9 +86,6 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.get
       Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -110,9 +100,6 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.put
       Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -127,9 +114,6 @@ Resources:
       CodeUri: .
       Handler: app.api_lambda.delete
       Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          TABLE: !Ref TABLENAME
       Events:
         UsersPOST:
           Type: Api
@@ -143,10 +127,9 @@ Resources:
       Description: 'Lambda function that ingest new CSV files on bucket gentem-bucket'
       CodeUri: .
       Handler: app.users_ingestion.ingest_users
-      Policies: AmazonS3FullAccess
-    Environment:
-      Variables:
-        INGEST_CSV_DELIMITER: !Ref INGEST_CSV_DELIMITER
+      Policies:
+        - AmazonS3FullAccess
+        - AmazonDynamoDBFullAccess
     Events:
       CSVCreated:
         Type: S3
