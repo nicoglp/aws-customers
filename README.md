@@ -29,7 +29,7 @@ TODO
 
 ## Development Environment
 
-## Requirements
+### Requirements
 To start working with AWS Lambdas, next tools al required: 
 
 * AWS CLI already configured with Administrator permission
