@@ -29,12 +29,14 @@ TODO
 
 ## Development Environment
 
-### AWS Lambda Requirements
-To start working with AWS Lambdas, next tools al required:
+## Requirements
+To start working with AWS Lambdas, next tools al required: 
 
-* AWS CLI 
-* Docker
-* SAM CLI
+* AWS CLI already configured with Administrator permission
+* [AWS SAM CLI](https://docs.aws.amazon.com/en_pv/serverless-application-model/latest/developerguide/serverless-sam-cli-install-mac.html) 
+* [Python 3 installed](https://www.python.org/downloads/)
+* [Docker installed](https://www.docker.com/community-edition)
+* [AWS Toolkit for JetBrains](https://docs.aws.amazon.com/en_pv/toolkit-for-jetbrains/latest/userguide/key-tasks.html)
 
 ### Set Up Project 
 
@@ -85,13 +87,13 @@ $ sam local invoke UsersFunction --event events/get_event.json
 **Invoking function locally through local API Gateway**
 
 ```shell script
-sam local start-api
+$ sam local start-api
 ```
 If the previous command ran successfully you should now be able to hit the following local endpoints
 
 _Create a new User_
 ```shell script
-curl -X POST \
+$ curl -X POST \
   http://127.0.0.1:3000/users \
   -H 'content-type: application/json' \
   -d '{
@@ -105,7 +107,7 @@ curl -X POST \
 
 _Get previous user_
 ```shell script
-curl -X GET http://127.0.0.1:3000/users/jon.doe@gmail.com
+$ curl -X GET http://127.0.0.1:3000/users/jon.doe@gmail.com
 ```
 
 ## Packaging and deployment
@@ -132,7 +134,7 @@ aws s3 mb s3://bucketname --region region
 
 I've created one to use for to deploy the current project.
 
-** nicoglp-artifacts **
+**_nicoglp-artifacts_**
 
 
 Next, run the following command to package our Lambda function to S3:
@@ -161,13 +163,15 @@ aws cloudformation describe-stacks \
     --output table
 ``` 
 
+> **See [Serverless Application Model (SAM) HOWTO Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-quick-start.html) for more details in how to get started.**
+
 ## Last Production Endpoints
 
 Last production endpoints !!
 
  _POST /users : Create new User_
  ```shell script
-curl -X POST \
+$ curl -X POST \
   https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users \
   -H 'content-type: application/json' \
   -d '{
@@ -181,17 +185,17 @@ curl -X POST \
 
 _GET /users/{id} : Get user with {id}_
 ```shell script
-curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users/jon.doe@gmail.com
+$ curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users/jon.doe@gmail.com
 ```
 
 _DELETE /users/{id} : Delete user with {id}_
 ```shell script
-curl -X  https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users/jon.doe@gmail.com
+$ curl -X  https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users/jon.doe@gmail.com
 ```
 
 _GET /users : List of users_
 ```shell script
-curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users
+$ curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users
 ```
 
 
@@ -199,6 +203,6 @@ curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users
 
 In order to delete our Serverless Application recently deployed you can use the following AWS CLI Command:
 
-```bash
-aws cloudformation delete-stack --stack-name users-api
+```shell script
+$ aws cloudformation delete-stack --stack-name users-api
 ```
