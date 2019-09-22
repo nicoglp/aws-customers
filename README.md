@@ -198,6 +198,164 @@ _GET /users : List of users_
 $ curl -X GET https://f8lkr3u8u5.execute-api.us-east-2.amazonaws.com/Prod/users
 ```
 
+ _POST /claims : Create new Claim_
+ _First we need to create the billing provider, rendering provider, referring provider, patient and insured (if necessary)_
+
+ _POST /providers : Create new Billing Provider_
+ ```shell script
+$ curl -X POST https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/providers \
+    -H 'content-type: application/json' \
+    -d '{ "name":"Gentem",
+        "address":"303 YOUNGLOVE AVE, san francisco 94103, CA",
+        "npi":"1568412344",
+        "type":"billing_provider",
+        "phone":"424-248-7725"
+}'
+```
+
+ _POST /providers : Create new Rendering Provider_
+ ```shell script
+$ curl -X POST https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/providers \
+    -H 'content-type: application/json' \
+    -d '{ "name":"Saint Francis Memorial Hospital",
+        "address":"2900 Hyde St Lower Nob Hill, san francisco 94103, CA",
+        "npi":"1316061998",
+        "type":"rendering_provider"
+}'
+```
+
+ _POST /providers : Create new Referring Provider_
+ ```shell script
+$ curl -X POST https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/providers \
+    -H 'content-type: application/json' \
+    -d '{"name":"John Lin",
+        "npi":"1568412347",
+        "type":"referring_provider"
+}'
+```
+
+ _POST /profiles : Create new Patient_
+ ```shell script
+$ curl -X POST https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/profiles \
+    -H 'content-type: application/json' \
+    -d '{ "email":"susan.doe1@gmail.com",
+        "lastName":"Doe",
+        "gender":"Female",
+        "firstName":"Susan",
+        "address":"1 glove drive , san francisco 94103, CA",
+        "memberId":"ABC100286987",
+        "phone":"415 1234567",
+        "dob":"2015-10-19"
+}'
+```
+
+ _POST /profiles : Create new Insured_
+ ```shell script
+$ curl -X POST https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/profiles \
+    -H 'content-type: application/json' \
+    -d '{ "email":"jon.doe1@gmail.com",
+        "lastName":"Doe",
+        "gender":"Male",
+        "firstName":"Jon",
+        "address":"1 glove drive , san francisco 94103, CA",
+        "memberId":"ABC100286987",
+        "phone":"415 1234567",
+        "middleInitial":"P",
+        "dob":"1981-06-24"
+}'
+```
+ _To create the claim we need those ids created_
+ _Glosary with claim columns: https://docs.google.com/document/d/1q7WokZnkXgHTZsC3V3cR43_eaK6nixqnJQ_mSnXSCW4/edit_
+  ```shell script
+$ curl -X POST https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/claims \
+    -H 'content-type: application/json' \
+    -d '{
+        "patientAccountNumber": "1234567",
+        "totalCharge": 200.50,
+        "amountPaid": 0,
+        "insuranceName": "blue_shield_ca",
+        "insuredId": "f576dab6-e38d-11e9-9ee5-0addcae3daec",
+        "patientId": "fe8e6a88-e38d-11e9-9ee6-0addcae3daec",
+        "referringProviderId": "09f16a6a-e38e-11e9-8e5b-0addcae3daec",
+        "billingProviderId": "13c3f882-e38e-11e9-8e5c-0addcae3daec",
+        "billingProviderTaxId": "HE567W65489A",
+        "renderingProviderId": "1beee0e4-e38e-11e9-8e5d-0addcae3daec",
+        "insuredPolicyGroup": "Z9364859",
+        "insurancePlanName": "IFP ON EXCHANGE",
+        "priorAuthorizationNumber": "63B4295825",
+        "physicianSupplierSignature": "Signature on File",
+        "physicianSupplierSignatureDate": "2019-09-29",
+        "illnessDate": "2019-09-26",
+        "similarSymptomDate": "2019-08-20",
+        "unableToWorkFrom": "2019-09-26",
+        "unableToWorkTo": "2019-10-26",
+        "hospitalAdmitDate": "2019-09-26",
+        "hospitalDischargeDate": "2019-10-15",
+        "additionalClaimInformation": "",
+        "insuranceType": "OTHER",
+        "patientCondition": "Other Accident",
+        "patientSignatureDate": "2019-09-29",
+        "patientSignature": "Signature on File",
+        "insuredSignature": "Signature on File",
+        "patientRelation": "CHILD",
+        "otherInsuredName": "Mcintire, Ashley L",
+        "otherInsuredPolicyGroup": "115",
+        "otherInsuredCompanyName": "UHC",
+        "anotherHealthBenefitPlan": "true",
+        "claimState": {"state": "Created"},
+        "serviceLines": [{
+                        "procedureCode": 87653,
+                        "charges": 100.40,
+                        "units": 1,
+                        "modifiers": [],
+                        "diagnosisCodes": ["N949"],
+                        "serviceDateFrom": "2019-09-29",
+                        "serviceDateTo": "2019-09-29",
+                        "placeOfService": "21",
+                        "emergencyIndicator": "false"
+                        },
+                        {"procedureCode":87798,
+                        "charges":20.02,
+                        "units":5,
+                        "modifiers":["49"],
+                        "diagnosisCodes":["Z7251"],
+                        "serviceDateFrom":"2019-09-29",
+                        "serviceDateTo":"2019-09-29",
+                        "placeOfService":"21",
+                        "emergencyIndicator":"false"
+                        }]
+        }'
+```
+
+_GET /claims/{id} : Get claim with {id}_
+```shell script
+$ curl -X GET https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/claims/80866180-e38e-11e9-929c-0addcae3daec
+```
+
+_GET /claims : List of claims_
+```shell script
+$ curl -X GET https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/claims
+```
+
+_GET /providers/{id} : Get provider with {id}_
+```shell script
+$ curl -X GET https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/providers/09f16a6a-e38e-11e9-8e5b-0addcae3daec
+```
+
+_GET /providers : List of providers_
+```shell script
+$ curl -X GET https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/providers
+```
+
+_GET /profiles/{id} : Get profile with {id}_
+```shell script
+$ curl -X GET https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/profiles/f576dab6-e38d-11e9-9ee5-0addcae3daec
+```
+
+_GET /profiles : List of profiles_
+```shell script
+$ curl -X GET https://q1il74s1xa.execute-api.us-east-2.amazonaws.com/Prod/profiles
+```
 
 ## Cleanup
 

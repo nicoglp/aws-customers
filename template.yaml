@@ -7,7 +7,7 @@ Parameters:
     Type: String
     Description: Set the runtime environment
     Default: 'prod'
-  TABLENAME:
+  USERTABLENAME:
     Type: String
     Description: The DynamoDB table for storing Users information.
     Default: 'Users'
@@ -27,20 +27,20 @@ Parameters:
 Globals:
   Function:
     Runtime: python3.7
-    Timeout: 6
+    Timeout: 20
     Environment:
       Variables:
         ENVIRONMENT: !Ref ENVIRONMENT
         REGION: !Ref REGIONNAME
         LOGLEVEL: !Ref LOGLEVEL
-        TABLE: !Ref TABLENAME
+        USERTABLE: !Ref USERTABLENAME
         INGEST_CSV_DELIMITER: !Ref INGESTCSVDELIMITER
 
 Resources:
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Ref TABLENAME
+      TableName: !Ref USERTABLENAME
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
@@ -56,7 +56,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve list of Users'
       CodeUri: .
-      Handler: app.api_lambda.list
+      Handler: app.api_lambda.list_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -70,7 +70,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - POST Method to create a new Users entity'
       CodeUri: .
-      Handler: app.api_lambda.post
+      Handler: app.api_lambda.post_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -84,7 +84,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve an Users entity'
       CodeUri: .
-      Handler: app.api_lambda.get
+      Handler: app.api_lambda.get_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -98,7 +98,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - PUT Method to update a complete Users entity'
       CodeUri: .
-      Handler: app.api_lambda.put
+      Handler: app.api_lambda.put_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -112,7 +112,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - DELETE Method to remove an Users entity'
       CodeUri: .
-      Handler: app.api_lambda.delete
+      Handler: app.api_lambda.delete_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -135,3 +135,127 @@ Resources:
         Type: S3
         Properties:
           Bucket: gentem-bucket
+  LISTClaimFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve list of Claims'
+      CodeUri: .
+      Handler: app.api_lambda.list_claim
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /claims
+            Method: GET
+
+  POSTClaimFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - POST Method to create a new Claims entity'
+      CodeUri: .
+      Handler: app.api_lambda.post_claim
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /claims
+            Method: POST
+
+  GETClaimFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve a Claim entity'
+      CodeUri: .
+      Handler: app.api_lambda.get_claim
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /claims/{id}
+            Method: GET
+
+  LISTProviderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve list of Providers'
+      CodeUri: .
+      Handler: app.api_lambda.list_provider
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /providers
+            Method: GET
+
+  POSTProviderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - POST Method to create a new Providers entity'
+      CodeUri: .
+      Handler: app.api_lambda.post_provider
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /providers
+            Method: POST
+
+  GETProviderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve a Provider entity'
+      CodeUri: .
+      Handler: app.api_lambda.get_provider
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /providers/{id}
+            Method: GET
+  LISTProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve list of Profile'
+      CodeUri: .
+      Handler: app.api_lambda.list_profile
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /profiles
+            Method: GET
+
+  POSTProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - POST Method to create a new Profiles entity'
+      CodeUri: .
+      Handler: app.api_lambda.post_profile
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /profiles
+            Method: POST
+
+  GETProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: 'RESTFull API - GET Method to retrieve a Profile entity'
+      CodeUri: .
+      Handler: app.api_lambda.get_profile
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UsersPOST:
+          Type: Api
+          Properties:
+            Path: /profiles/{id}
+            Method: GET

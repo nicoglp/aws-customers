@@ -15,3 +15,9 @@ class PaginationSchema(Schema):
 
 
 pagination_schema = PaginationSchema()
+
+
+class DBSchema(Schema):
+    id = fields.Str(attribute="id")
+    createdAt = fields.DateTime(attribute='created_at', required=False)
+    updatedAt = fields.DateTime(attribute='updated_at', required=False)
