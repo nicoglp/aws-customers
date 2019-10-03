@@ -57,8 +57,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve list of Users
-      CodeUri: s3://piafarinella/1e685d16c0e6ca8ad9c33ddf20e1b247
-      Handler: app.api_lambda.list_user
+      CodeUri: s3://piafarinella/89691700e6d614c45e256f2fe77a580f
+      Handler: app.user.user_lambda.list_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -70,8 +70,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - POST Method to create a new Users entity
-      CodeUri: s3://piafarinella/ead82503b067b00fe78a22db0304db3a
-      Handler: app.api_lambda.post_user
+      CodeUri: s3://piafarinella/7e057be599b2764e629c34af93a5e957
+      Handler: app.user.user_lambda.post_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -83,8 +83,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve an Users entity
-      CodeUri: s3://piafarinella/dcac69233ae4d5f9ae713e154bae3d82
-      Handler: app.api_lambda.get_user
+      CodeUri: s3://piafarinella/db9d9a9be08854cc648d9da08a6276dd
+      Handler: app.user.user_lambda.get_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -96,8 +96,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - PUT Method to update a complete Users entity
-      CodeUri: s3://piafarinella/56780b2c35f048cd6c2e9883828a33e6
-      Handler: app.api_lambda.put_user
+      CodeUri: s3://piafarinella/409bd41add9aa45fb2dfb10636093952
+      Handler: app.user.user_lambda.put_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -109,8 +109,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - DELETE Method to remove an Users entity
-      CodeUri: s3://piafarinella/e4a0ba4928c5207d949930d0a67e8f43
-      Handler: app.api_lambda.delete_user
+      CodeUri: s3://piafarinella/65babe95fd604c8b989a015b49d971f7
+      Handler: app.user.user_lambda.delete_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -122,8 +122,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Lambda function that ingest new CSV files on bucket gentem-bucket
-      CodeUri: s3://piafarinella/f12ecc3adf27044f55b11066d1758faf
-      Handler: app.users_ingestion.ingest_users
+      CodeUri: s3://piafarinella/38d9938829c2fb72257b264ca3b546b9
+      Handler: app.user.users_ingestion.ingest_users
       Policies:
       - AmazonS3FullAccess
       - AmazonDynamoDBFullAccess
@@ -136,8 +136,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve list of Claims
-      CodeUri: s3://piafarinella/68ff2e314f0c2ca2751e569584e61807
-      Handler: app.api_lambda.list_claim
+      CodeUri: s3://piafarinella/1c86559f8da639402c5463bd922a1f05
+      Handler: app.claim.claim_lambda.list_claim
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -149,8 +149,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - POST Method to create a new Claims entity
-      CodeUri: s3://piafarinella/35e508d5ce051608a66298ba73f58da3
-      Handler: app.api_lambda.post_claim
+      CodeUri: s3://piafarinella/e6c26b374340ab72346d1117e420de65
+      Handler: app.claim.claim_lambda.post_claim
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -162,8 +162,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve a Claim entity
-      CodeUri: s3://piafarinella/40562d517675142c270274a0f43d73ae
-      Handler: app.api_lambda.get_claim
+      CodeUri: s3://piafarinella/9706588cc840130acea85a8b15b8e40e
+      Handler: app.claim.claim_lambda.get_claim
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -175,8 +175,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve list of Providers
-      CodeUri: s3://piafarinella/207c1e98b55aa5e99981975908348115
-      Handler: app.api_lambda.list_provider
+      CodeUri: s3://piafarinella/ae2ead0b882dab42f3f72f601005ad03
+      Handler: app.provider.provider_lambda.list_provider
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -188,8 +188,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - POST Method to create a new Providers entity
-      CodeUri: s3://piafarinella/6f9aea51ea692821a437717cf27893df
-      Handler: app.api_lambda.post_provider
+      CodeUri: s3://piafarinella/094d1e5c95b73d267959c8e462fc1ac5
+      Handler: app.provider.provider_lambda.post_provider
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -201,8 +201,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve a Provider entity
-      CodeUri: s3://piafarinella/db0dbf286382d082556253359cf0d9d0
-      Handler: app.api_lambda.get_provider
+      CodeUri: s3://piafarinella/4e050406ff33332daa0aae9b2804f279
+      Handler: app.provider.provider_lambda.get_provider
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -214,8 +214,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve list of Profile
-      CodeUri: s3://piafarinella/44d0aea2cd6a5965f9380933676be75a
-      Handler: app.api_lambda.list_profile
+      CodeUri: s3://piafarinella/1e26dda4eea90c42e0ec334d8f91d1dd
+      Handler: app.profile.profile_lambda.list_profile
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -227,8 +227,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - POST Method to create a new Profiles entity
-      CodeUri: s3://piafarinella/b7c7de9e597268c5ac7194399022b996
-      Handler: app.api_lambda.post_profile
+      CodeUri: s3://piafarinella/9d1c574c941b0f2d78672a61962b4964
+      Handler: app.profile.profile_lambda.post_profile
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -240,8 +240,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: RESTFull API - GET Method to retrieve a Profile entity
-      CodeUri: s3://piafarinella/e83063c422f6ad0b08cfc4fac83ddeef
-      Handler: app.api_lambda.get_profile
+      CodeUri: s3://piafarinella/a87b2cff62dd2b7b1d97b811a36932b4
+      Handler: app.profile.profile_lambda.get_profile
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:

@@ -1,6 +1,6 @@
 from marshmallow import ValidationError
 
-from app.users import dao, schema, User
+from app.user.users import dao, schema, User
 from test import UserTestCase
 
 

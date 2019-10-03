@@ -2,7 +2,7 @@ import json
 
 from marshmallow import ValidationError
 
-from app.provider import schema, Provider
+from app.provider.provider import schema, Provider
 from test.claims.providers import ProviderTestCase
 
 

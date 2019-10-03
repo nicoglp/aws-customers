@@ -56,7 +56,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve list of Users'
       CodeUri: .
-      Handler: app.api_lambda.list_user
+      Handler: app.user.user_lambda.list_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -70,7 +70,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - POST Method to create a new Users entity'
       CodeUri: .
-      Handler: app.api_lambda.post_user
+      Handler: app.user.user_lambda.post_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -84,7 +84,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve an Users entity'
       CodeUri: .
-      Handler: app.api_lambda.get_user
+      Handler: app.user.user_lambda.get_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -98,7 +98,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - PUT Method to update a complete Users entity'
       CodeUri: .
-      Handler: app.api_lambda.put_user
+      Handler: app.user.user_lambda.put_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -112,7 +112,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - DELETE Method to remove an Users entity'
       CodeUri: .
-      Handler: app.api_lambda.delete_user
+      Handler: app.user.user_lambda.delete_user
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -126,7 +126,7 @@ Resources:
     Properties:
       Description: 'Lambda function that ingest new CSV files on bucket gentem-bucket'
       CodeUri: .
-      Handler: app.users_ingestion.ingest_users
+      Handler: app.user.users_ingestion.ingest_users
       Policies:
         - AmazonS3FullAccess
         - AmazonDynamoDBFullAccess
@@ -140,7 +140,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve list of Claims'
       CodeUri: .
-      Handler: app.api_lambda.list_claim
+      Handler: app.claim.claim_lambda.list_claim
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -154,7 +154,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - POST Method to create a new Claims entity'
       CodeUri: .
-      Handler: app.api_lambda.post_claim
+      Handler: app.claim.claim_lambda.post_claim
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -168,7 +168,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve a Claim entity'
       CodeUri: .
-      Handler: app.api_lambda.get_claim
+      Handler: app.claim.claim_lambda.get_claim
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -182,7 +182,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve list of Providers'
       CodeUri: .
-      Handler: app.api_lambda.list_provider
+      Handler: app.provider.provider_lambda.list_provider
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -196,7 +196,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - POST Method to create a new Providers entity'
       CodeUri: .
-      Handler: app.api_lambda.post_provider
+      Handler: app.provider.provider_lambda.post_provider
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -210,7 +210,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve a Provider entity'
       CodeUri: .
-      Handler: app.api_lambda.get_provider
+      Handler: app.provider.provider_lambda.get_provider
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -223,7 +223,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve list of Profile'
       CodeUri: .
-      Handler: app.api_lambda.list_profile
+      Handler: app.profile.profile_lambda.list_profile
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -237,7 +237,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - POST Method to create a new Profiles entity'
       CodeUri: .
-      Handler: app.api_lambda.post_profile
+      Handler: app.profile.profile_lambda.post_profile
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:
@@ -251,7 +251,7 @@ Resources:
     Properties:
       Description: 'RESTFull API - GET Method to retrieve a Profile entity'
       CodeUri: .
-      Handler: app.api_lambda.get_profile
+      Handler: app.profile.profile_lambda.get_profile
       Policies: AmazonDynamoDBFullAccess
       Events:
         UsersPOST:

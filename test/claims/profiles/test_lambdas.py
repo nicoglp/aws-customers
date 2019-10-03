@@ -1,9 +1,9 @@
 import json
 
-from app import api_lambda
+from app.profile import profile_lambda
 from test.claims.profiles import ProfileTestCase
-from app import profile
-from app.profile import service
+from app.profile import profile
+
 
 
 class LambdaProfileTestCase(ProfileTestCase):
@@ -12,12 +12,12 @@ class LambdaProfileTestCase(ProfileTestCase):
                              address="1 glove drive , san francisco 94103, CA", member_id="ABC100286987", phone="415 1234567", middle_initial="P", dob=None):
         profile_json = self._create_profile_json(email, last_name, gender, first_name, address, member_id, phone, middle_initial, dob)
         event = dict(body=profile_json, httpMethod='POST')
-        response = api_lambda.post(event, None, service)
+        response = profile_lambda.post_profile(event, None)
         return response
 
     def delete_profile(self, id):
         event = dict(httpMethod='DELETE', pathParameters={'id': id})
-        deleted_response = api_lambda.delete(event, None, service)
+        deleted_response = profile_lambda.delete_profile(event, None)
         return deleted_response
 
     def test_post(self):
@@ -36,7 +36,7 @@ class LambdaProfileTestCase(ProfileTestCase):
         # Get id
         profile_dict = json.loads(create_response['body'])
         event = dict(httpMethod='GET', pathParameters={'id': profile_dict['id']})
-        retrieved_user = api_lambda.get(event, None, service)
+        retrieved_user = profile_lambda.get_profile(event, None)
         self.assertIsNotNone(retrieved_user)
 
         # Delete id
@@ -49,7 +49,7 @@ class LambdaProfileTestCase(ProfileTestCase):
 
         # List
         event = dict(httpMethod='GET')
-        page_string = api_lambda.list(event, None, service)
+        page_string = profile_lambda.list_profile(event, None)
         self.assertIsNotNone(page_string)
 
         # Delete id

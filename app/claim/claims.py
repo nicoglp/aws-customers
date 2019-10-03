@@ -4,15 +4,15 @@ from marshmallow import fields, post_load
 from marshmallow.validate import OneOf
 from sqlalchemy import types, ForeignKey, Column
 from sqlalchemy.orm import relationship
-from .base.model import DBModel
-from .base import dao_postgres as dao
-from .base import schema
-from .base import service
+from app.base.model import DBModel
+from app.base import dao_postgres as dao
+from app.base import schema
+from app.base import service
 from .claim_state import ClaimState, ClaimStateSchema
-from .service_line import ServiceLine, ServiceLineSchema
-from .profile import ProfileSchema
-from .provider import ProviderSchema
-from . import session
+from app.service_line.service_line import ServiceLine, ServiceLineSchema
+from app.profile.profile import ProfileSchema
+from app.provider.provider import ProviderSchema
+from app import session
 
 
 class PatientCondition(enum.Enum):

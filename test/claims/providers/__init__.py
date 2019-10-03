@@ -3,7 +3,7 @@ import unittest
 import uuid
 from datetime import datetime
 
-from app import provider
+from app.provider import provider
 
 
 class ProviderTestCase(unittest.TestCase):

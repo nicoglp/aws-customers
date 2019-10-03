@@ -1,10 +1,10 @@
 from datetime import date
 import json
 from marshmallow import ValidationError
-from app.claims import schema, Claim
+from app.claim.claims import schema, Claim
 from test.claims import ClaimTestCase
-from app.provider import ProviderType
-from app.profile import Gender
+from app.provider.provider import ProviderType
+from app.profile.profile import Gender
 from test.claims.providers import provider_test_case
 from test.claims.profiles import profile_test_case
 

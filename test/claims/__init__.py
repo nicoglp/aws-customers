@@ -2,9 +2,8 @@ import json
 import unittest
 import uuid
 from datetime import datetime
-from app import claim_state
-from app import service_line
-from app import claims
+from app.service_line import service_line
+from app.claim import claims, claim_state
 
 
 class ClaimTestCase(unittest.TestCase):

@@ -1,10 +1,10 @@
 from datetime import date
 import json
-from app import api_lambda
+from app.claim import claim_lambda
 from test.claims import ClaimTestCase
-from app.claims import service
-from app.provider import ProviderType
-from app.profile import Gender
+from app.claim.claims import service
+from app.provider.provider import ProviderType
+from app.profile.profile import Gender
 from test.claims.providers.test_lambdas import provider_test_case
 from test.claims.profiles.test_lambdas import profile_test_case
 
@@ -35,12 +35,12 @@ class claimclaimTestCase(ClaimTestCase):
 
         claim_json = self._create_claim_json(patient_id, referring_provider_id, billing_provider_id, rendering_provider_id, insured_id)
         event = dict(body=claim_json, httpMethod='POST')
-        response = api_lambda.post(event, None, service)
+        response = claim_lambda.post_claim(event, None)
         return response, patient_id, billing_provider_id, referring_provider_id, rendering_provider_id, insured_id
 
     def _delete_claim(self, claim_id, patient_id, billing_provider_id, referring_provider_id, rendering_provider_id, insured_id):
         event = dict(httpMethod='DELETE', pathParameters={'id': claim_id})
-        deleted_response = api_lambda.delete(event, None, service)
+        deleted_response = claim_lambda.delete_claim(event, None)
         self.assertIsNotNone(deleted_response['body'])
         self.assertEqual(deleted_response['statusCode'], 200)
 
@@ -64,7 +64,7 @@ class claimclaimTestCase(ClaimTestCase):
         # Get id
         claim_dict = json.loads(create_response['body'])
         event = dict(httpMethod='GET', pathParameters={'id': claim_dict['id']})
-        retrieved_claim = api_lambda.get(event, None, service)
+        retrieved_claim = claim_lambda.get_claim(event, None)
         self.assertIsNotNone(retrieved_claim)
 
         self._delete_claim(claim_dict['id'], patient_id, billing_provider_id, referring_provider_id, rendering_provider_id, insured_id)
@@ -74,7 +74,7 @@ class claimclaimTestCase(ClaimTestCase):
 
         # List
         event = dict(httpMethod='GET')
-        page_string = api_lambda.list(event, None, service)
+        page_string = claim_lambda.list_claim(event, None)
         self.assertIsNotNone(page_string)
 
         claim_dict = json.loads(response['body'])

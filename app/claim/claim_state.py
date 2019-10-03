@@ -1,13 +1,12 @@
-from datetime import datetime
 import enum
 from marshmallow import fields, post_load
 from marshmallow.validate import OneOf
 from sqlalchemy import types, ForeignKey, Column
-from .base.model import DBModel
-from .base import dao_postgres as dao
-from .base import schema
-from .base import service
-from . import session
+from app.base.model import DBModel
+from app.base import dao_postgres as dao
+from app.base import schema
+from app.base import service
+from app import session
 
 
 class State(enum.Enum):

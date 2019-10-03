@@ -2,7 +2,7 @@ import json
 
 from marshmallow import ValidationError
 
-from app.profile import schema, Profile
+from app.profile.profile import schema, Profile
 from test.claims.profiles import ProfileTestCase
 
 

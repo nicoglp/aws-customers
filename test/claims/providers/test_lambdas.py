@@ -1,8 +1,8 @@
 import json
 
-from app import api_lambda
+from app.provider import provider_lambda
 from test.claims.providers import ProviderTestCase
-from app import provider
+from app.provider import provider
 
 
 class LambdaProviderTestCase(ProviderTestCase):
@@ -10,12 +10,12 @@ class LambdaProviderTestCase(ProviderTestCase):
     def create_provider(self, name="John Lin", address=None, npi="1568412345", type=provider.ProviderType.REFERRING_PROVIDER.value, phone=None):
         provider_json = self._create_provider_json(name, address, npi, type, phone)
         event = dict(body=provider_json, httpMethod='POST')
-        response = api_lambda.post(event, None, provider.service)
+        response = provider_lambda.post_provider(event, None)
         return response
 
     def delete_provider(self, id):
         event = dict(httpMethod='DELETE', pathParameters={'id': id})
-        deleted_response = api_lambda.delete(event, None, provider.service)
+        deleted_response = provider_lambda.delete_provider(event, None)
         return deleted_response
 
     def test_post(self):
@@ -35,7 +35,7 @@ class LambdaProviderTestCase(ProviderTestCase):
         # Get id
         provider_dict = json.loads(create_response['body'])
         event = dict(httpMethod='GET', pathParameters={'id': provider_dict['id']})
-        retrieved_user = api_lambda.get(event, None, provider.service)
+        retrieved_user = provider_lambda.get_provider(event, None)
 
         self.assertIsNotNone(retrieved_user)
 
@@ -49,7 +49,7 @@ class LambdaProviderTestCase(ProviderTestCase):
 
         # List
         event = dict(httpMethod='GET')
-        page_string = api_lambda.list(event, None, provider.service)
+        page_string = provider_lambda.list_provider(event, None)
         self.assertIsNotNone(page_string)
 
         # Delete id

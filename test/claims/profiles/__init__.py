@@ -3,7 +3,7 @@ import unittest
 import uuid
 from datetime import datetime, date
 
-from app import profile
+from app.profile import profile
 
 
 class ProfileTestCase(unittest.TestCase):

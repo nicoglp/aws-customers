@@ -3,7 +3,7 @@ import unittest
 import uuid
 from datetime import datetime
 
-from app import users
+from app.user import users
 
 
 class UserTestCase(unittest.TestCase):

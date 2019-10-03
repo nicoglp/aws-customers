@@ -2,7 +2,7 @@ import json
 
 from marshmallow import ValidationError
 
-from app.users import schema, User
+from app.user.users import schema, User
 from test import UserTestCase
 
 
