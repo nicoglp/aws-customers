@@ -1,10 +1,10 @@
 from marshmallow import fields, post_load
 
-from . import config
-from .base import dao_dynamodb as dao
-from .base import model
-from .base import schema
-from .base import service
+from app import config
+from app.base import dao_dynamodb as dao
+from app.base import model
+from app.base import schema
+from app.base import service
 
 
 class User(model.Model):
@@ -33,6 +33,6 @@ class UserSchema(schema.ModelSchema):
 
 schema = UserSchema()
 
-dao = dao.DynamoDAO(config.TABLENAME, schema, 'email')
+dao = dao.DynamoDAO(config.USERTABLENAME, schema, 'email')
 
 service = service.EntityService(dao=dao, schema=schema)

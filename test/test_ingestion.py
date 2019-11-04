@@ -1,6 +1,6 @@
 import boto3
 
-from app import users_ingestion
+from app.user import users_ingestion
 from test import UserTestCase
 
 

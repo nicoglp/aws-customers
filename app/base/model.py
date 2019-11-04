@@ -1,4 +1,12 @@
+from datetime import datetime
 from math import ceil
+from sqlalchemy import types
+from sqlalchemy import Column
+from sqlalchemy.ext.declarative import declarative_base
+import uuid
+
+
+Base = declarative_base()
 
 
 class Pagination():
@@ -50,3 +58,22 @@ class Model:
                 setattr(self, key, dictionary[key])
         for key in kwargs:
             setattr(self, key, kwargs[key])
+
+
+class DBModel (Base):
+
+    __abstract__ = True
+
+    def __init__(self, *initial_data, **kwargs):
+        """
+        Allows instantiate an object with a dictionary or a list of params
+        as argument of the constructor method.
+        """
+        for dictionary in initial_data:
+            for key in dictionary:
+                setattr(self, key, dictionary[key])
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
+
+    id = Column(types.String(36), server_default="gen_random_uuid()", primary_key=True)
+    created_at = Column(types.DateTime, default=datetime.utcnow())

@@ -7,7 +7,7 @@ import boto3
 from marshmallow import ValidationError, fields
 
 from app import logger, config
-from app.users import UserSchema, dao
+from app.user.users import UserSchema, dao
 
 
 class IngestSchema(UserSchema):

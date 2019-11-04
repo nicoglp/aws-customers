@@ -1,7 +1,9 @@
+from contextlib import contextmanager
 import json
 from .exception import *
 from .schema import pagination_schema
 from marshmallow import ValidationError
+from .. import session
 
 
 class EntityService:
@@ -32,33 +34,33 @@ class EntityService:
 
     def create(self, data, **kwargs):
         # self._audit_before()
+        with session_scope(session):
+            try:
+                entity = self.schema.loads(data)
+                created_entity = self.dao.save(entity)
 
-        try:
-            entity = self.schema.loads(data)
-            created_entity = self.dao.save(entity)
+                # self._audit_after(created_entity)
+                return self.schema.dumps(created_entity)
 
-            # self._audit_after(created_entity)
-            return self.schema.dumps(created_entity)
-
-        except ValidationError as validation_error:
-            raise ValidationError(validation_error)
+            except ValidationError as validation_error:
+                raise ValidationError(validation_error)
 
     def delete(self, id, **kwargs):
 
         # self._audit_before()
+        with session_scope(session):
+            try:
+                # Check existence
+                if False:
+                    raise exception.EntityNotFoundError(id)
 
-        try:
-            # Check existence
-            if False:
-                raise exception.EntityNotFoundError(id)
+                deleted = self.dao.delete(id)
 
-            deleted = self.dao.delete(id)
+                # self._audit_after(deleted_entity)
+                return str(deleted)
 
-            # self._audit_after(deleted_entity)
-            return str(deleted)
-
-        except ValidationError as validation_error:
-            raise ValidationError(validation_error)
+            except ValidationError as validation_error:
+                raise ValidationError(validation_error)
 
     def list(self, **kwargs):
         # self._audit_before()
@@ -124,3 +126,15 @@ class EntityService:
     #         raise exception.EntityNotFoundError(id)
     #
     #
+
+
+@contextmanager
+def session_scope(session, rollback=False):
+    try:
+        yield session
+        session.commit() if not rollback else session.rollback()
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()

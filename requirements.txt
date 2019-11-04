@@ -1,2 +1,4 @@
 boto3
 marshmallow
+psycopg2-binary
+SQLAlchemy
